@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { signIn, signOut, updateName } from '../store/actions';
+
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import SignIn from './SignIn';
@@ -6,12 +9,9 @@ import Header from './Header';
 import Timeline from "./Timeline";
 
 class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         loading: true,
-         isSignedIn: false
-      }
+   constructor() {
+      super();
+      this.googleAuth = null;
    }
 
    componentDidMount() {
@@ -20,38 +20,52 @@ class App extends React.Component {
          window.gapi.auth2.init({
             clientId: '224787910667-sreuueohouh5b97buebkr3gpvp63d5lp.apps.googleusercontent.com'
          }).then(() => {
-            const googleAuth = window.gapi.auth2.getAuthInstance();
-            const signedIn = googleAuth.isSignedIn.get();
-            this.setState({
-               isSignedIn: signedIn,
-               loading: false
-            });
+            this.googleAuth = window.gapi.auth2.getAuthInstance();
 
             // Listen for sign in changes
-            googleAuth.isSignedIn.listen((signedIn) => {
-               this.setState({
-                  isSignedIn: signedIn
-               })
+            this.googleAuth.isSignedIn.listen((isSignedIn) => {
+               this.onAuthChange(isSignedIn);
             });
+
+            this.onAuthChange(this.googleAuth.isSignedIn.get());
          });
       });
    }
 
-   render() {
-      if (this.state.loading) {
+   onAuthChange(isSignedIn) {
+      if (isSignedIn) {
+         const googleUser = this.googleAuth.currentUser.get();
+         const profile = googleUser.getBasicProfile();
+         const name = profile.getGivenName();
+         this.props.signIn();
+         this.props.updateName(name);
+      }
+      else {
+         this.props.signOut();
+      }
+   };
+
+   display_content() {
+      if (this.props.isSignedIn === null) {
          return <div>Loading...</div>
       }
 
-      if (!this.state.isSignedIn) {
+      if (!this.props.isSignedIn) {
          return <SignIn />
       }
 
       return (
+         <Route path="/" exact component={Timeline} />
+      );
+   };
+
+   render() {
+      return (
          <div className="ui container">
             <BrowserRouter>
                <div>
-                  <Header />
-                  <Route path="/" exact component={Timeline} />
+                  <Header name={this.props.name} isSignedIn={this.props.isSignedIn} />
+                  {this.display_content()}
                </div>
             </BrowserRouter>
          </div>
@@ -59,4 +73,11 @@ class App extends React.Component {
    }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+   return {
+      isSignedIn: state.auth.isSignedIn,
+      name: state.auth.name
+   }
+};
+
+export default connect(mapStateToProps, { signIn, signOut, updateName })(App);

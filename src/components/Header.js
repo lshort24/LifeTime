@@ -1,15 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
-   const googleAuth = window.gapi.auth2.getAuthInstance();
-   const googleUser = googleAuth.currentUser.get();
-   const profile = googleUser.getBasicProfile();
-   const name = profile.getGivenName();
-
+const Header = (props) => {
    const handleSignOutClick = () => {
       const googleAuth = window.gapi.auth2.getAuthInstance();
       googleAuth.signOut();
+   };
+
+   const displayGreeting = () => {
+      if (!props.isSignedIn) {
+         return null;
+      }
+
+      return (
+         <div>
+            Welcome {props.name}
+            <button onClick={handleSignOutClick}>Sign Out</button>
+         </div>
+      );
    };
 
    return (
@@ -18,8 +26,7 @@ const Header = () => {
             LifeTime
          </Link>
          <div className="right menu">
-            Welcome {name}
-            <a href="#" onClick={handleSignOutClick}>Sign Out</a>
+            {displayGreeting()}
          </div>
       </div>
    );

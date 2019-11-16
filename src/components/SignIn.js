@@ -8,7 +8,9 @@ const SignIn = () => {
 
    return (
       <div>
-         <button onClick={handleSignInClick}>Sign In </button>
+         <button onClick={handleSignInClick}>
+            <img alt="sign in with Google" src="/images/btn_google_signin_dark_normal_web.png"/>
+         </button>
       </div>
    );
 };
