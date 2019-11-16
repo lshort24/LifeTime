@@ -64,7 +64,7 @@ class App extends React.Component {
          <div className="ui container">
             <BrowserRouter>
                <div>
-                  <Header name={this.props.name} isSignedIn={this.props.isSignedIn} />
+                  <Header />
                   {this.display_content()}
                </div>
             </BrowserRouter>
@@ -75,8 +75,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
    return {
-      isSignedIn: state.auth.isSignedIn,
-      name: state.auth.name
+      isSignedIn: state.auth.isSignedIn
    }
 };
 

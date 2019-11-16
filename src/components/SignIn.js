@@ -1,9 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { signIn } from '../store/actions';
 
-const SignIn = () => {
+const SignIn = (props) => {
    const handleSignInClick = () => {
-      const googleAuth = window.gapi.auth2.getAuthInstance();
-      googleAuth.signIn();
+      props.signIn();
    };
 
    return (
@@ -15,4 +16,4 @@ const SignIn = () => {
    );
 };
 
-export default SignIn;
+export default connect(null, { signIn })(SignIn);
