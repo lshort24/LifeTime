@@ -47,7 +47,22 @@ class App extends React.Component {
 
    display_content() {
       if (this.props.isSignedIn === null) {
-         return <div>Loading...</div>
+         return (
+            <div className="ui segment">
+               <div className="ui active inverted dimmer">
+                  <div className="ui text loader">Loading</div>
+               </div>
+               <div className="ui placeholder">
+                  <div className="paragraph">
+                     <div className="line">&nbsp;</div>
+                     <div className="line">&nbsp;</div>
+                     <div className="line">&nbsp;</div>
+                     <div className="line">&nbsp;</div>
+                     <div className="line">&nbsp;</div>
+                  </div>
+               </div>
+            </div>
+         );
       }
 
       if (!this.props.isSignedIn) {
@@ -65,6 +80,7 @@ class App extends React.Component {
             <BrowserRouter>
                <div>
                   <Header />
+                  <div className="ui divider"></div>
                   {this.display_content()}
                </div>
             </BrowserRouter>

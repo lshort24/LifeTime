@@ -5,7 +5,8 @@ import { signOut } from '../store/actions';
 
 const Header = (props) => {
    const handleSignOutClick = () => {
-      props.signOut();
+      const googleAuth = window.gapi.auth2.getAuthInstance();
+      googleAuth.signOut();
    };
 
    const displayGreeting = () => {
@@ -14,19 +15,21 @@ const Header = (props) => {
       }
 
       return (
-         <div>
-            Welcome {props.name}
-            <button onClick={handleSignOutClick}>Sign Out</button>
+         <div className="ui secondary menu">
+            <div className="item">Welcome {props.name}</div>
+            <button className="ui button basic" onClick={handleSignOutClick}>
+               Sign Out
+            </button>
          </div>
       );
    };
 
    return (
-      <div className="ui secondary pointing menu">
+      <div className="ui secondary menu">
          <Link to="/" className="item">
-            LifeTime
+            <h1 className="ui header">LifeTime</h1>
          </Link>
-         <div className="right menu">
+         <div className="item right">
             {displayGreeting()}
          </div>
       </div>

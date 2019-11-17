@@ -4,12 +4,13 @@ import { signIn } from '../store/actions';
 
 const SignIn = (props) => {
    const handleSignInClick = () => {
-      props.signIn();
+      const googleAuth = window.gapi.auth2.getAuthInstance();
+      googleAuth.signIn();
    };
 
    return (
       <div>
-         <button onClick={handleSignInClick}>
+         <button className="ui button fluid" style={{backgroundColor: '#ffffff'}} onClick={handleSignInClick}>
             <img alt="sign in with Google" src="/images/btn_google_signin_dark_normal_web.png"/>
          </button>
       </div>
