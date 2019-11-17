@@ -19,12 +19,12 @@ export const updateName = (name) => {
    }
 };
 
-export const fetchTimelines = () => {
+export const fetchTimeSpans = () => {
    return async (dispatch) => {
-      const response = await shortAPI.get('/timeline/read.php');
+      const response = await shortAPI.get('/timespan/read.php');
       dispatch({
-         type: 'FETCH_TIMELINES',
-         payload: response.data.records
+         type: 'FETCH_TIME_SPANS',
+         payload: response.data
       });
    }
 };

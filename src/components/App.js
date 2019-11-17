@@ -6,7 +6,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import SignIn from './SignIn';
 import Header from './Header';
-import Timeline from "./Timeline";
+import Timeline from "./TimelineList";
 
 class App extends React.Component {
    constructor() {
