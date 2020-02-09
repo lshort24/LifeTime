@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-   baseURL: 'http://shortsrecipes.com/services/api'
+   baseURL: 'https://shortsrecipes.com/services/api'
 });

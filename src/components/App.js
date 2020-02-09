@@ -6,7 +6,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import SignIn from './SignIn';
 import Header from './Header';
-import Timeline from "./TimelineList";
+import TimelineList from "./TimelineList";
 
 class App extends React.Component {
    constructor() {
@@ -70,7 +70,7 @@ class App extends React.Component {
       }
 
       return (
-         <Route path="/" exact component={Timeline} />
+         <Route path="/" exact component={TimelineList} />
       );
    };
 
@@ -80,10 +80,11 @@ class App extends React.Component {
             <BrowserRouter>
                <div>
                   <Header />
-                  <div className="ui divider"></div>
+                  <div className="ui divider">&nbsp;</div>
                   {this.display_content()}
                </div>
             </BrowserRouter>
+            <a href="https://www.vecteezy.com/free-vector/background">Background Vectors by Vecteezy</a>
          </div>
       );
    }
