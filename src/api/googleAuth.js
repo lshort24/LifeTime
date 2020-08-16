@@ -1,4 +1,14 @@
-const clientId = '';
+const googleApiInit = (clientId) => {
+    return new Promise((resolve, reject) => {
+        window.gapi.load('auth2', () => {
+            window.gapi.auth2.init({clientId}).then(() => {
+                resolve();
+            }).catch(() => {
+                reject(new Error ('Google API initialization failed.'));
+            });
+        });
+    })
+}
 
 const isSignedIn = () => {
     const googleAuth = window.gapi.auth2.getAuthInstance();
@@ -46,4 +56,4 @@ const getName = () => {
     return profile.getGivenName();
 }
 
-export { clientId, isSignedIn, signIn, signOut, getAuthToken, getName }
+export { googleApiInit, isSignedIn, signIn, signOut, getAuthToken, getName }

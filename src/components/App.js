@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updateIsSignedIn, updateName } from '../store/actions';
-import { clientId, isSignedIn, getName } from '../api/GoogleAuth';
-
+import { googleApiInit, isSignedIn, getName } from '../api/googleAuth';
+import { googleClientId } from '../secrets';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import SignIn from './SignIn';
@@ -11,19 +11,16 @@ import TimelineList from "./TimelineList";
 
 class App extends React.Component {
    componentDidMount() {
-      // Determine if the user is logged in or not
-      window.gapi.load('auth2', () => {
-         window.gapi.auth2.init({clientId}).then(() => {
-            if (isSignedIn()) {
-               this.props.updateIsSignedIn(true);
-               this.props.updateName(getName());
-            }
-            else {
-               this.props.updateIsSignedIn(false);
-            }
-         }, () => {
-            console.log("Could not initialize Google authentication.")
-         });
+      googleApiInit(googleClientId).then(() => {
+         if (isSignedIn()) {
+            this.props.updateIsSignedIn(true);
+            this.props.updateName(getName());
+         }
+         else {
+            this.props.updateIsSignedIn(false);
+         }
+      }, () => {
+         console.log("Could not initialize Google authentication.")
       });
    }
 
@@ -66,7 +63,6 @@ class App extends React.Component {
                   {this.display_content()}
                </div>
             </BrowserRouter>
-            <a href="https://www.vecteezy.com/free-vector/background">Background Vectors by Vecteezy</a>
          </div>
       );
    }

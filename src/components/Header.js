@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateIsSignedIn } from '../store/actions';
-import { signOut } from '../api/GoogleAuth';
+import { signOut } from '../api/googleAuth';
 
 const Header = (props) => {
    const handleSignOutClick = () => {

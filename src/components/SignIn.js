@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { updateIsSignedIn, updateName } from '../store/actions';
-import { signIn, getName } from '../api/GoogleAuth';
+import { signIn, getName } from '../api/googleAuth';
 
 const SignIn = (props) => {
    const handleSignInClick = () => {
