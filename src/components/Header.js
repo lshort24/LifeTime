@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signOut } from '../store/actions';
+import { updateIsSignedIn } from '../store/actions';
+import { signOut } from '../api/GoogleAuth';
 
 const Header = (props) => {
    const handleSignOutClick = () => {
-      const googleAuth = window.gapi.auth2.getAuthInstance();
-      googleAuth.signOut();
+      signOut().then(() => {
+          props.updateIsSignedIn(false);
+      });
    };
 
    const displayGreeting = () => {
@@ -43,4 +45,5 @@ const mapStateToProps = (state) => {
    }
 };
 
-export default connect(mapStateToProps, { signOut })(Header);
+const mapDispatchToProps = { updateIsSignedIn }
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

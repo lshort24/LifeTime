@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { signIn, signOut, updateName } from '../store/actions';
+import { updateIsSignedIn, updateName } from '../store/actions';
+import { clientId, isSignedIn, getName } from '../api/GoogleAuth';
 
 import { BrowserRouter, Route } from 'react-router-dom';
 
@@ -9,41 +10,22 @@ import Header from './Header';
 import TimelineList from "./TimelineList";
 
 class App extends React.Component {
-   constructor() {
-      super();
-      this.googleAuth = null;
-   }
-
    componentDidMount() {
       // Determine if the user is logged in or not
       window.gapi.load('auth2', () => {
-         window.gapi.auth2.init({
-            clientId: '224787910667-sreuueohouh5b97buebkr3gpvp63d5lp.apps.googleusercontent.com'
-         }).then(() => {
-            this.googleAuth = window.gapi.auth2.getAuthInstance();
-
-            // Listen for sign in changes
-            this.googleAuth.isSignedIn.listen((isSignedIn) => {
-               this.onAuthChange(isSignedIn);
-            });
-
-            this.onAuthChange(this.googleAuth.isSignedIn.get());
+         window.gapi.auth2.init({clientId}).then(() => {
+            if (isSignedIn()) {
+               this.props.updateIsSignedIn(true);
+               this.props.updateName(getName());
+            }
+            else {
+               this.props.updateIsSignedIn(false);
+            }
+         }, () => {
+            console.log("Could not initialize Google authentication.")
          });
       });
    }
-
-   onAuthChange(isSignedIn) {
-      if (isSignedIn) {
-         const googleUser = this.googleAuth.currentUser.get();
-         const profile = googleUser.getBasicProfile();
-         const name = profile.getGivenName();
-         this.props.signIn();
-         this.props.updateName(name);
-      }
-      else {
-         this.props.signOut();
-      }
-   };
 
    display_content() {
       if (this.props.isSignedIn === null) {
@@ -90,10 +72,15 @@ class App extends React.Component {
    }
 }
 
+// TODO: add prop types
 const mapStateToProps = (state) => {
    return {
       isSignedIn: state.auth.isSignedIn
    }
 };
 
-export default connect(mapStateToProps, { signIn, signOut, updateName })(App);
+const mapDispatchToProps = {
+   updateIsSignedIn,
+   updateName
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

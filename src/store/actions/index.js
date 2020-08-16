@@ -1,16 +1,11 @@
 import shortAPI from '../../api/shortAPI';
 
-export const signIn = () => {
+export const updateIsSignedIn = (isSignedIn) => {
    return {
-      type: "SIGN_IN"
+      type: "UPDATE_IS_SIGNED_IN",
+      payload: isSignedIn
    }
-};
-
-export const signOut = () => {
-   return {
-      type: "SIGN_OUT"
-   }
-};
+}
 
 export const updateName = (name) => {
    return {

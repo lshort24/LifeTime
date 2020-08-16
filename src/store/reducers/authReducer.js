@@ -9,10 +9,8 @@ const INITIAL_STATE = {
 // Use lodash _.omit to remove properties from an object
 export default (state = INITIAL_STATE, action) => {
    switch(action.type) {
-      case 'SIGN_IN':
-         return { ...state, isSignedIn: true };
-      case 'SIGN_OUT':
-         return { ...state, isSignedIn: false };
+      case 'UPDATE_IS_SIGNED_IN':
+         return {...state, isSignedIn: action.payload}
       case 'UPDATE_NAME':
          return { ...state, name: action.payload };
       case 'FETCH_TIME_SPANS':
