@@ -24,6 +24,18 @@ const signIn = () => {
 }
 
 const getAuthToken = () => {
+    const idToken = localStorage.getItem('idToken');
+    const idTokenExpiresAt = localStorage.getItem('idTokenExpiresAt');
+    if (idToken && idTokenExpiresAt) {
+        const now = new Date();
+        const expiresAt = parseInt(idTokenExpiresAt);
+        if (now > expiresAt) {
+            console.log('ID token has expired, fetching a new one.');
+        }
+        else {
+            return idToken;
+        }
+    }
     const googleAuth = window.gapi.auth2.getAuthInstance();
     if (!googleAuth || googleAuth.isSignedIn.get() === false) {
         throw new Error('User is not signed in');
@@ -31,11 +43,12 @@ const getAuthToken = () => {
 
     const googleUser = googleAuth.currentUser.get();
     const authResponse = googleUser.getAuthResponse();
-    return {
-        idToken: authResponse.id_token,
-        expiresIn: authResponse.expires_in,
-        expiresAt: authResponse.expires_at
-    }
+
+    // Update cache
+    localStorage.setItem('idToken', authResponse.id_token);
+    localStorage.setItem('idTokenExpiresAt', authResponse.expires_at);
+
+    return authResponse.id_token;
 }
 
 const signOut = () => {
@@ -52,7 +65,6 @@ const getName = () => {
 
     const googleUser = googleAuth.currentUser.get();
     const profile = googleUser.getBasicProfile();
-    console.log('profile', profile);
     return profile.getGivenName();
 }
 

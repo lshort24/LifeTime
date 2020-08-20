@@ -1,4 +1,5 @@
 import shortAPI from '../../api/shortAPI';
+import { getAuthToken } from "../../api/googleAuth";
 
 export const updateIsSignedIn = (isSignedIn) => {
    return {
@@ -15,6 +16,13 @@ export const updateName = (name) => {
 };
 
 export const fetchTimeSpans = () => {
+   const token = getAuthToken();
+
+   const config = {
+      headers: {
+         'Authorization': 'Bearer ' + token
+      }
+   }
    return async (dispatch) => {
       const response = await shortAPI.get('/timespan/read.php');
       dispatch({

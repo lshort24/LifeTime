@@ -68,7 +68,6 @@ class App extends React.Component {
    }
 }
 
-// TODO: add prop types
 const mapStateToProps = (state) => {
    return {
       isSignedIn: state.auth.isSignedIn
