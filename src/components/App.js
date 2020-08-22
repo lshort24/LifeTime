@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updateIsSignedIn, updateName } from '../store/actions';
-import { googleApiInit, isSignedIn, getName } from '../api/googleAuth';
+import { googleApiInit, isSignedIn, authenticate, getName } from '../api/googleAuth';
 import { googleClientId } from '../secrets';
 import { BrowserRouter, Route } from 'react-router-dom';
 
@@ -13,8 +13,13 @@ class App extends React.Component {
    componentDidMount() {
       googleApiInit(googleClientId).then(() => {
          if (isSignedIn()) {
-            this.props.updateIsSignedIn(true);
-            this.props.updateName(getName());
+            authenticate().then(() => {
+               this.props.updateIsSignedIn(true);
+               this.props.updateName(getName());
+            }).catch(() => {
+               console.log("Not authenticated");
+               this.props.updateIsSignedIn(false)
+            })
          }
          else {
             this.props.updateIsSignedIn(false);

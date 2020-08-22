@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { updateIsSignedIn, updateName } from '../store/actions';
-import { signIn, getName } from '../api/googleAuth';
+import { signIn, authenticate, getName } from '../api/googleAuth';
 
 const SignIn = (props) => {
    const handleSignInClick = () => {
       signIn().then(() => {
-          props.updateIsSignedIn(true);
-          props.updateName(getName());
+          authenticate().then(() => {
+              props.updateIsSignedIn(true);
+              props.updateName(getName());
+          })
       }).catch((error) => {
           const reason = error.error ?? 'Unknown';
           if (error.error) {
