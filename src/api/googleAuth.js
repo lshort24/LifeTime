@@ -31,10 +31,10 @@ const authenticate = () => {
         const idTokenExpiresAt = localStorage.getItem('idTokenExpiresAt');
         if (idToken && idTokenExpiresAt) {
             const now = new Date();
-            const expiresAt = parseInt(idTokenExpiresAt);
+            const expiresAt = new Date(parseInt(idTokenExpiresAt));
             if (now < expiresAt) {
-                console.log('Authenticated because the token has not expired yet.');
-                resolve();
+                console.log(`Authenticated because the token has not expired yet. It will expire at ${expiresAt}`);
+                resolve({authenticated: true});
                 return;
             }
         }
@@ -50,11 +50,11 @@ const authenticate = () => {
         const authResponse = googleUser.getAuthResponse();
 
         // Validate the id_token
-        shortAPI.post('/authenticate.php', {idToken: authResponse.id_token}).then(() => {
+        shortAPI.post('/authenticate.php', {idToken: authResponse.id_token}).then((response) => {
             // Update cache
             localStorage.setItem('idToken', authResponse.id_token);
             localStorage.setItem('idTokenExpiresAt', authResponse.expires_at);
-            resolve();
+            resolve(response.data);
         }).catch((error) => {
             reject(error);
         })

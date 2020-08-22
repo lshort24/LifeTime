@@ -14,6 +14,13 @@ export const updateName = (name) => {
    }
 };
 
+export const updateAuthError = (message) => {
+   return {
+      type: "UPDATE_AUTH_ERROR",
+      payload: message
+   }
+};
+
 export const fetchTimeSpans = () => {
    return async (dispatch) => {
       const response = await shortAPI.get('/timespan/read.php');

@@ -1,7 +1,8 @@
 const INITIAL_STATE = {
    isSignedIn: null,
    name: null,
-   timeSpans: []
+   timeSpans: [],
+   authError: null
 };
 
 // Remember to only use state and action to determine returned state
@@ -13,6 +14,8 @@ export default (state = INITIAL_STATE, action) => {
          return {...state, isSignedIn: action.payload}
       case 'UPDATE_NAME':
          return { ...state, name: action.payload };
+      case 'UPDATE_AUTH_ERROR':
+         return { ...state, authError: action.payload }
       case 'FETCH_TIME_SPANS':
          return { ...state, timeSpans: action.payload };
       default:

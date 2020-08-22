@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateIsSignedIn, updateName } from '../store/actions';
+import { updateIsSignedIn, updateName, updateAuthError } from '../store/actions';
 import { googleApiInit, isSignedIn, authenticate, getName } from '../api/googleAuth';
 import { googleClientId } from '../secrets';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -13,11 +13,17 @@ class App extends React.Component {
    componentDidMount() {
       googleApiInit(googleClientId).then(() => {
          if (isSignedIn()) {
-            authenticate().then(() => {
-               this.props.updateIsSignedIn(true);
-               this.props.updateName(getName());
-            }).catch(() => {
-               console.log("Not authenticated");
+            authenticate().then((response) => {
+               if (response.authenticated) {
+                  this.props.updateIsSignedIn(true);
+                  this.props.updateName(getName());
+               }
+               else {
+                  this.props.updateIsSignedIn(false);
+                  this.props.updateAuthError(response.failReason);
+               }
+            }).catch((error) => {
+               console.log("Not authenticated", error);
                this.props.updateIsSignedIn(false)
             })
          }
@@ -75,12 +81,14 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
    return {
-      isSignedIn: state.auth.isSignedIn
+      isSignedIn: state.auth.isSignedIn,
+      authError: state.auth.authError
    }
 };
 
 const mapDispatchToProps = {
    updateIsSignedIn,
-   updateName
+   updateName,
+   updateAuthError
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);
