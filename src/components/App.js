@@ -30,8 +30,8 @@ class App extends React.Component {
          else {
             this.props.updateIsSignedIn(false);
          }
-      }, () => {
-         console.log("Could not initialize Google authentication.")
+      }, (error) => {
+         console.log("Could not initialize Google authentication.", error);
       });
    }
 
@@ -60,7 +60,7 @@ class App extends React.Component {
       }
 
       return (
-         <Route path="/" exact component={TimelineList} />
+         <Route path="/lifetime" exact component={TimelineList} />
       );
    };
 

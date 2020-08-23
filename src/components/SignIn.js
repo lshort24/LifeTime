@@ -33,7 +33,7 @@ const SignIn = (props) => {
             {authError}
             <div>
                 <button className="ui button fluid" style={{backgroundColor: '#ffffff'}} onClick={handleSignInClick}>
-                    <img alt="sign in with Google" src="http://localhost:3000/images/btn_google_signin_dark_normal_web.png"/>
+                    <img alt="sign in with Google" src="https://shortsrecipes.com/lifetime/images/btn_google_signin_dark_normal_web.png"/>
                 </button>
             </div>
         </React.Fragment>

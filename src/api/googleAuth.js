@@ -1,12 +1,13 @@
 import shortAPI from "./shortAPI";
 
 const googleApiInit = (clientId) => {
+    debugger;
     return new Promise((resolve, reject) => {
         window.gapi.load('auth2', () => {
             window.gapi.auth2.init({clientId}).then(() => {
                 resolve();
-            }).catch(() => {
-                reject(new Error ('Google API initialization failed.'));
+            }).catch((error) => {
+                reject(error);
             });
         });
     })
