@@ -60,7 +60,7 @@ class App extends React.Component {
       }
 
       return (
-         <Route path="/lifetime" exact component={TimelineList} />
+         <Route path="/" exact component={TimelineList} />
       );
    };
 
